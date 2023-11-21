@@ -37,4 +37,4 @@ pts_obs = np.array([[2, 3, 4, 5],
 
 zs = np.array([2, 3, 4, 5])
 
-ibvs_controller(K, pts_des, pts_obs, zs, gain)
+print(ibvs_controller(K, pts_des, pts_obs, zs, gain))

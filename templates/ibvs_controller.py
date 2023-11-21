@@ -25,7 +25,7 @@ def ibvs_controller(K, pts_des, pts_obs, zs, gain):
     v  - 6x1 np.array, desired tx, ty, tz, wx, wy, wz camera velocities.
     """
     v = np.zeros((6, 1))
-    J = []
+    J = np.empty([0, 6])
 
     # Number of points
     n = len(pts_des[0])
@@ -33,8 +33,7 @@ def ibvs_controller(K, pts_des, pts_obs, zs, gain):
     # Compute Jacobian for each point and stack
     for i in range(n):
         J_i = ibvs_jacobian(K, pts_obs[:, i].reshape(2, 1), zs[i])
-        J.append(J_i)
-    J = np.array(J).reshape(2*n, 6)
+        J = np.vstack((J, J_i))
 
     # Compute Moore-Penrose pseudo-inverse
     J_inv = inv(J.T @ J) @ J.T

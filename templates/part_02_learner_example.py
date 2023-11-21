@@ -1,6 +1,5 @@
 import numpy as np
 from ibvs_controller import ibvs_controller
-from ibvs_simulation import ibvs_simulation
 from dcm_from_rpy import dcm_from_rpy
 
 # Camera intrinsics matrix - known.
@@ -30,4 +29,12 @@ gain = 0.1
 # ...
 
 # Run simulation - use known depths.
-ibvs_simulation(Twc_init, Twc_last, pts, K, gain, False)
+pts_des = np.array([[1, 2, 3, 4],
+                    [5, 6,  7,  8]])
+
+pts_obs = np.array([[2, 3, 4, 5],
+                    [4, 5,  6,  7]])
+
+zs = np.array([2, 3, 4, 5])
+
+ibvs_controller(K, pts_des, pts_obs, zs, gain)

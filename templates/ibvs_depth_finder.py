@@ -26,7 +26,27 @@ def ibvs_depth_finder(K, pts_obs, pts_prev, v_cam):
     J = np.zeros((2*n, 6))
     zs_est = np.zeros(n)
 
-    #--- FILL ME IN ---
+    # Translational and rotational velocities of camera
+    v = v_cam[0:3, :]
+    w = v_cam[3:6, :]
+
+    for i in range(n):
+        # Compute Jacobian 
+        J = ibvs_jacobian(K, pts_obs[:, i].reshape(2, 1), 1)
+        J_t = J[:, 0:3]
+        J_w = J[:, 3:6]
+
+        # Compute A
+        A = J_t @ v
+
+        # Compute b
+        b = (pts_obs[:, i]-pts_prev[:, i]).reshape(2, 1) - J_w @ w
+
+        # Compute linear least squares
+        z, residuals, rank, singular_values = np.linalg.lstsq(A, b, rcond=None)
+
+        #Compute z estimates
+        zs_est[i] = 1/z
 
     #------------------
 

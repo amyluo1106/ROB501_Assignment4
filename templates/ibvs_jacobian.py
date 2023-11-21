@@ -20,7 +20,19 @@ def ibvs_jacobian(K, pt, z):
     J  - 2x6 np.array, Jacobian. The matrix must contain float64 values.
     """
 
-    #--- FILL ME IN ---
+    # Camera intrinsic calibration matrix given by [[fx, s, cx], [0, fy, cy], [0, 0, 1]]
+    # The x and y focal lengths in K are guaranteed to be identical.
+    f = K[0, 0]
+    # Take cx, cy as the principal point
+    u_0 = K[0, 2]
+    v_0 = K[1, 2]
+    # Pixel coordinates of point relative to the principal point
+    u_bar = pt[0, 0] - u_0
+    v_bar = pt[1, 0] - v_0
+
+    # Compute Jacobian
+    J = np.array([[-f/z, 0, u_bar/z, (u_bar*v_bar)/f,  -(f**2+u_bar**2)/f, v_bar],
+                  [0, -f/z, v_bar/z, (f**2+v_bar**2)/f, -(u_bar*v_bar/f), -u_bar]])
 
     #------------------
 

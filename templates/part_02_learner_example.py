@@ -3,6 +3,7 @@ from ibvs_controller import ibvs_controller
 from ibvs_depth_finder import ibvs_depth_finder
 from ibvs_simulation import ibvs_simulation
 from dcm_from_rpy import dcm_from_rpy
+import matplotlib.pyplot as plt
 
 # Camera intrinsics matrix - known.
 K = np.array([[500.0, 0, 400.0], 
@@ -47,4 +48,18 @@ zs = np.array([[2, 3, 4, 5]])
 # print(ibvs_controller(K, pts_des, pts_obs, zs, gain))
 # print(ibvs_depth_finder(K, pts_obs, pts_prev, v_cam))
 
-ibvs_simulation(Twc_init, Twc_last, pts, K, gain, False)
+gain = 1.5
+
+i = ibvs_simulation(Twc_init, Twc_last, pts, K, gain, False)
+
+print(i)
+
+gain = [0.1, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5]
+iterations = [69, 30, 15, 9, 5, 9, 17]
+plt.figure(2)
+plt.plot(gain[:], iterations[:], 'go')
+plt.grid(True)
+plt.show(block = False)
+plt.savefig('iterations.png')
+
+#tar cvf handin.tar *.py

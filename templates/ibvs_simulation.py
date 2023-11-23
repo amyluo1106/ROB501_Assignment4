@@ -24,9 +24,12 @@ def project_into_camera(Twc, K, pts):
 
 def plot_image_points(pts_des, pts_obs):
     """Plot observed and desired image plane points."""
-    plt.clf()
+    #plt.clf()
     plt.plot(pts_des[0:1, :], pts_des[1:2, :], 'rx')
     plt.plot(pts_obs[0:1, :], pts_obs[1:2, :], 'bo')
+    plt.plot(pts_obs[0:1, 1], pts_obs[1:2, 1], 'mo')
+    plt.plot(pts_obs[0:1, 2], pts_obs[1:2, 2], 'co')
+    plt.plot(pts_obs[0:1, 3], pts_obs[1:2, 3], 'go')
     plt.xlim([0, IMAGE_SIZE[0]])
     plt.ylim([0, IMAGE_SIZE[1]])
     plt.grid(True)
@@ -101,6 +104,9 @@ def ibvs_simulation(Twc_init,
             # Plot current configuration, while moving.
             plt.figure(1)
             plot_image_points(pts_des, pts_obs)
+        plt.savefig('converge.png')
         
         # Increment counter.
         i += 1
+
+    return i
